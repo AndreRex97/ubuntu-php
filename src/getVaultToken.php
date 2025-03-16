@@ -93,14 +93,14 @@ function verifyHMAC($vaultAddr, $vaultToken, $keyName, $input, $hmac, $hashAlgor
 
 // === CONFIG ===
 $vaultAddr = "http://vault:8200";
-// $roleId = "4282de00-ced6-85c6-0aaf-8e709376e07a";  // Replace with actual role_id
-// $secretId = "5019acb7-82c1-bf72-5a79-cc965544f5c4"; // Replace with actual secret_id
+$roleId = "4282de00-ced6-85c6-0aaf-8e709376e07a";  // Replace with actual role_id
+$secretId = "5019acb7-82c1-bf72-5a79-cc965544f5c4"; // Replace with actual secret_id
 $keyName = "hmac-key";
 $inputMessage = "my-secret-message";
 
 // === AUTHENTICATE ===
-// $vaultToken = getVaultToken($vaultAddr, $roleId, $secretId);
-// echo "Vault Token: " . $vaultToken . PHP_EOL;
+$vaultToken = getVaultToken($vaultAddr, $roleId, $secretId);
+echo "Vault Token: " . $vaultToken . PHP_EOL;
 
 // === GENERATE HMAC ===
 $hmac = generateHMAC($vaultAddr, $vaultToken, $keyName, $inputMessage);
