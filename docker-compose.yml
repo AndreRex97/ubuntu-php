@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  web:
+    image: ubuntu:latest
+    container_name: ubuntu_apache
+    networks:
+      - axs_network
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./src:/var/www/html:cached
+      - ./apache-config:/etc/apache2/sites-available
+    entrypoint: ["/bin/bash", "-c", "apt update && apt install -y apache2 php libapache2-mod-php php-curl curl && service apache2 start && tail -f /dev/null"]
+  
+  vault:
+    image: hashicorp/vault
+    container_name: vault
+    networks:
+      - axs_network
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - "8200:8200"
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: "root"
+    volumes:
+      - vault-data:/vault/data
+
+volumes:
+  apache-config:
+  vault-data:
+
+networks:
+  axs_network:
+    driver: bridge
