@@ -108,5 +108,5 @@ echo "Generated HMAC: " . $hmac . PHP_EOL;
 
 // // === AUTHENTICATE ===
 $isValid = verifyHMAC($vaultAddr, $vaultToken, $keyName, $inputMessage, $hmac);
-echo $isValid ? "HMAC is valid!" : "HMAC is invalid!";
+echo $isValid ? "HMAC is valid!" . PHP_EOL : "HMAC is invalid!" . PHP_EOL;
 ?>
