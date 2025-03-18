@@ -19,7 +19,7 @@ vault secrets enable transit
 Then, create a **transit key** for HMAC operations:
 
 ```sh
-vault write -f transit/keys/hmac-key
+vault write transit/keys/hmac-key type=hmac key_size=32
 ```
 
 ---
