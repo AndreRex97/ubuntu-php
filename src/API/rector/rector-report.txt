@@ -1,0 +1,89 @@
+
+1 file with changes
+===================
+
+1) src/legacy_report.php:4
+
+    ---------- begin diff ----------
+@@ @@
+ define('UNUSED_CONSTANT', 123);
+
+ // Unused function
+-function unused_helper()
++function unused_helper(): bool
+ {
+     return true;
+ }
+@@ @@
+ $ThresholdValue = 50;
+
+ // Legacy array and loose variable naming
+-$DataSet = array(
+-    array('score' => 45, 'name' => 'Alice'),
+-    array('score' => 82, 'name' => 'Bob'),
+-    array('score' => 67, 'name' => 'Charlie'),
+-    array('score' => 30, 'name' => 'Derek'),
+-);
++$DataSet = [
++    ['score' => 45, 'name' => 'Alice'],
++    ['score' => 82, 'name' => 'Bob'],
++    ['score' => 67, 'name' => 'Charlie'],
++    ['score' => 30, 'name' => 'Derek'],
++];
+
+-function GenerateReport($input)
++/**
++ * @return list<array{student: mixed, score: mixed, result: ('fail' | 'pass' | 'unknown')}>
++ */
++function GenerateReport($input): array
+ {
+-    $output = array();
++    $output = [];
+     foreach ($input as $Row) {
+         // nested if block
+         if ($Row['score'] !== null) {
+-            if ($Row['score'] >= 50) {
+-                $status = 'pass';
+-            } else {
+-                $status = 'fail';
+-            }
++            $status = $Row['score'] >= 50 ? 'pass' : 'fail';
+         } else {
+             $status = 'unknown';
+         }
+
+         // repeated logic (simplifiable)
+-        $output[] = array(
++        $output[] = [
+             'student' => $Row['name'],
+             'score' => $Row['score'],
+             'result' => $status
+-        );
++        ];
+     }
+
+     return $output;
+ }
+
+-function PrintReport($data)
++function PrintReport($data): void
+ {
+     foreach ($data as $entry) {
+-        echo $entry['student'] . ' - ' . strtoupper($entry['result']) . "\n";
++        echo $entry['student'] . ' - ' . strtoupper((string) $entry['result']) . "\n";
+     }
+ }
+    ----------- end diff -----------
+
+Applied rules:
+ * CompleteMissingIfElseBracketRector
+ * SimplifyIfElseToTernaryRector
+ * LongArrayToShortArrayRector
+ * NullToStrictStringFuncCallArgRector
+ * BoolReturnTypeFromBooleanConstReturnsRector
+ * ReturnTypeFromStrictNewArrayRector
+ * AddFunctionVoidReturnTypeWhereNoReturnRector
+
+
+ [OK] 1 file would have been changed (dry-run) by Rector                                                                
+
